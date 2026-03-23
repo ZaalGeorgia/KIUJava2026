@@ -1,5 +1,9 @@
 package lesson260310;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,6 +25,14 @@ public class CompositeExample {
 
         nestedPanel.add(button1);
         nestedPanel.add(button2);
+        
+		nestedPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println(e);
+			};
+
+		});
 
         mainPanel.add(nestedPanel);
 
