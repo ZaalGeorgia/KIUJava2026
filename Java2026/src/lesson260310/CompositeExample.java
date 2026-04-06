@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 public class CompositeExample {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        JFrame frame = new JFrame("Composite Example");
+		JFrame frame = new JFrame("Composite Example");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel mainPanel = new JPanel(); // composite
@@ -23,10 +23,11 @@ public class CompositeExample {
 
 		button1.addActionListener(e -> System.out.println("clicked!"));
 
-        nestedPanel.add(button1);
-        nestedPanel.add(button2);
-        
+		nestedPanel.add(button1);
+		nestedPanel.add(button2);
+
 		nestedPanel.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println(e);
@@ -34,11 +35,11 @@ public class CompositeExample {
 
 		});
 
-        mainPanel.add(nestedPanel);
+		mainPanel.add(nestedPanel);
 
-        frame.add(mainPanel);
+		frame.add(mainPanel);
 
-        frame.setSize(300, 200);
-        frame.setVisible(true);
-    }
+		frame.setSize(300, 200);
+		frame.setVisible(true);
+	}
 }

@@ -54,7 +54,6 @@ class Button {
 		device = d;
 	}
 
-
 	void poll() {
 		if (device.isOff()) {
 			device.turnOn();

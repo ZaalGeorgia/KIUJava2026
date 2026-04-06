@@ -13,7 +13,7 @@ public class Example01 {
 		a = b;
 
 		I i = a;
-		
+
 		i.m();
 
 	}
@@ -21,6 +21,7 @@ public class Example01 {
 }
 
 interface I {
+
 	void m();
 }
 

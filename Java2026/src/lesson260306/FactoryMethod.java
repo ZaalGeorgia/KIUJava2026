@@ -15,15 +15,18 @@ public class FactoryMethod {
 }
 
 class A {
+
 	M m = B.create();
 }
 
 class B implements M {
+
 	static M create() {
 		if (Math.random() < 0.5) {
 			return new B();
 		} else {
 			return new M() {
+
 				@Override
 				public void m() {
 					System.out.println("good bye");
@@ -33,8 +36,7 @@ class B implements M {
 	}
 
 	@Override
-	public
-	void m() {
+	public void m() {
 		System.out.println("hello");
 	}
 

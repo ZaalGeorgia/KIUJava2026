@@ -2,8 +2,8 @@ package lesson260320;
 
 public class Dog {
 
-	private abstract class Brain
-	{
+	private abstract class Brain {
+
 		protected abstract void humanWantsToPlay();
 
 		protected abstract void humanOfferedFood();

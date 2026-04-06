@@ -18,6 +18,7 @@ public class TemplateMethodExample {
 }
 
 interface Calc {
+
 	int calc();
 }
 
@@ -53,6 +54,7 @@ class A implements Calc {
 }
 
 class C extends A {
+
 	@Override
 	protected void changeY() {
 		y--;
