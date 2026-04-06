@@ -1,6 +1,8 @@
 package columns.model;
 
-public class View {
+import columns.model.kernel.Screen;
+
+class View {
 
 	private Screen screen;
 

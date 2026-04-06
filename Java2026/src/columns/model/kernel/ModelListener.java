@@ -1,4 +1,4 @@
-package columns.model;
+package columns.model.kernel;
 
 
 public interface ModelListener {

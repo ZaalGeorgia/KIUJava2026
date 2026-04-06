@@ -1,6 +1,6 @@
 package columns.model;
 
-public final class GameConfig {
+final class GameConfig {
 
 	public static final int BOX_SIZE = 25;
 	public static final int DEPTH = 15;

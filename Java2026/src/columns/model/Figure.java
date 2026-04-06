@@ -1,21 +1,20 @@
 package columns.model;
 
-import java.util.Random;
+import columns.model.kernel.RandomGenerator;
 
-public class Figure {
+class Figure {
 
-	static Random r = new Random();
 
 	public int x = GameConfig.WIDTH / 2 + 1, y = 1, c[] = new int[4];
 
-	public Figure()
+	public Figure(RandomGenerator random)
 	{
 		x = GameConfig.WIDTH / 2 + 1;
 		y = 1;
 		c[0] = 0;
-		c[1] = Math.abs(r.nextInt())%7+1;
-		c[2] = Math.abs(r.nextInt())%7+1;
-		c[3] = Math.abs(r.nextInt())%7+1;
+		c[1] = Math.abs(random.nextInt())%7+1;
+		c[2] = Math.abs(random.nextInt())%7+1;
+		c[3] = Math.abs(random.nextInt())%7+1;
 	}
 
 	public void moveRight() {

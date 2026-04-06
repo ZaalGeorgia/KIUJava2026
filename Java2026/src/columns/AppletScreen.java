@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Arrays;
 
-import columns.model.Screen;
+import columns.model.kernel.Screen;
 
 
 public class AppletScreen implements Screen {

@@ -1,6 +1,8 @@
 package columns.model;
 
-public class Board {
+import columns.model.kernel.ModelListener;
+
+class Board {
 
 	public int newField[][];
 	int oldField[][];
