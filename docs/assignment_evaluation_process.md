@@ -6,6 +6,12 @@ This document explains the grading rules students need to know for course assign
 
 It is assignment-agnostic. Technical rubrics, conversion tables, and assignment-specific bonus rules are defined in separate assignment documents.
 
+Interpretation rule:
+
+- `assignment_evaluation_process.md` defines course-level grading policy
+- `evaluation_instructions.md` defines evaluator workflow and document-handling rules
+- assignment-specific documents define the technical rubric, internal-mark structure, conversion rules, and assignment-specific gates
+
 ## Course-Level Structure
 
 - Total number of assignments: `7`
@@ -104,6 +110,34 @@ Rules:
 - the course-level first-submission `90+` bonus still depends only on the first evaluated submission
 - the result after final re-evaluation is the final result for that assignment
 
+## Evaluation Artifact Separation
+
+Evaluation documents must stay separate by role.
+
+Required separation:
+
+- review = evidence
+- grading = scoring derived only from the corresponding review
+- fix instructions = remediation derived from the review
+- final review = evidence for the updated submission
+- final grading = scoring derived only from the corresponding final review
+
+Graders must not introduce new repository findings during grading that are absent from the review the grading is based on.
+
+## Evaluation Artifact Naming
+
+Evaluation artifacts must use assignment-prefixed filenames.
+
+Pattern:
+
+- `A{N}_review.md`
+- `A{N}_grading.md`
+- `A{N}_fix_instructions.md`
+- `A{N}_final_review.md`
+- `A{N}_final_grading.md`
+
+This keeps evaluation artifacts unambiguous when one repository contains work for multiple assignments.
+
 ## What Assignment-Specific Documents Must Define
 
 Each assignment's own grading document must state clearly:
@@ -113,6 +147,48 @@ Each assignment's own grading document must state clearly:
 - the conversion from internal marks to regular grading points
 - whether the assignment has its own bonus point
 - any assignment-specific gating rules or special scoring conditions
+- whether any deliverable, including a report, requires a specific file format
+
+If an assignment-specific document does not explicitly require a particular report format, report presence should be evaluated format-agnostically.
+
+That means a report may count as present in formats such as:
+
+- `pdf`
+- `md`
+- `doc`
+- `docx`
+- `txt`
+
+Format, presence, and quality are separate decisions:
+
+- a report may be present but weak
+- a report may be present in a non-preferred format
+- a report is missing only when no relevant report artifact is actually present
+- `README.md` is only a candidate report and must be judged by content if it is the only candidate
+- a repository note or placeholder `README.md` does not count as a report by filename alone
+
+Build-tool rule:
+
+- missing Maven/Gradle must not be treated as a grading defect by itself unless the assignment-specific documents explicitly make build tooling part of the baseline requirements
+
+## Grading Output Requirements
+
+Each grading output must explicitly record all relevant scoring decisions rather than leaving them implicit.
+
+At minimum, that includes:
+
+- regular-grade conversion from the recorded internal mark
+- early-submission decision
+- first-submission `90+` decision
+- assignment-specific bonus decision
+- any relevant assignment-specific gating rules
+
+If a rule cannot be decided from available evidence, the grading output should say so explicitly rather than silently defaulting it to `0`.
+
+Consistency requirements:
+
+- the recorded final result must match the separately listed components exactly
+- if an assignment uses visible internal-mark categories, the recorded base internal mark must match the visible category arithmetic
 
 ## Short Examples
 
