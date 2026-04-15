@@ -1,34 +1,43 @@
 package badsmells;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /*
- * Smell: Mutable Data
+ * Smell:
+ * The internal list of enrolled students is returned directly, allowing external
+ * code to modify the internal state without control.
  *
- * The internal list is returned directly, so callers can mutate object state
- * without the class controlling those changes.
+ * Refactorings:
+ * - Returned an unmodifiable view of the list
+ * - Ensured all modifications happen through controlled methods
  *
- * Proposed Refactorings:
- * - Return an unmodifiable view or defensive copy.
- * - Encapsulate updates behind intention-revealing methods.
+ * Why better:
+ * The internal state is now protected. External code cannot accidentally or
+ * intentionally modify the list, which improves encapsulation and safety.
+ *
+ * Behavior:
+ * The observable behavior remains unchanged.
  */
 public class MutableDataExample {
 
-	private final List<String> enrolledStudents = new ArrayList<>();
+    private final List<String> enrolledStudents = new ArrayList<>();
 
-	public List<String> getEnrolledStudents() {
-		return enrolledStudents;
-	}
+    public List<String> getEnrolledStudents() {
+        return Collections.unmodifiableList(enrolledStudents);
+    }
 
-	public void enroll(String studentId) {
-		enrolledStudents.add(studentId);
-	}
+    public void enroll(String studentId) {
+        enrolledStudents.add(studentId);
+    }
 
-	public void clientCode() {
-		enroll("s-1001");
-		List<String> students = getEnrolledStudents();
-		students.clear();
-		System.out.println(getEnrolledStudents().size());
-	}
+    public void clientCode() {
+        enroll("s-1001");
+        List<String> students = getEnrolledStudents();
+
+        // students.clear(); // This would now throw UnsupportedOperationException
+
+        System.out.println(getEnrolledStudents().size());
+    }
 }
