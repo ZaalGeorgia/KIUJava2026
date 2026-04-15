@@ -2,47 +2,49 @@ package badsmells;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
- * Smell: Loops
+ * Smell:
+ * The loop performs a simple collection transformation (filtering and mapping),
+ * but expresses it in a verbose and less declarative way.
  *
- * The loop hides a simple collection transformation: filter students by GPA and
- * collect their names. Fowler treats this as a smell when a clearer pipeline
- * form is available.
+ * Refactorings:
+ * - Replaced the loop with a stream pipeline
  *
- * Proposed Refactorings:
- * - Replace the loop with a stream pipeline.
- * - Extract the selection predicate into a named method if it is reused.
+ * Why better:
+ * The intent of the operation (filter + map + collect) is now clearer and more
+ * concise, improving readability.
+ *
+ * Behavior:
+ * The observable behavior remains unchanged.
  */
 public class LoopsExample {
 
-	public List<String> honorStudents(List<Student> students) {
-		List<String> result = new ArrayList<>();
-		for (Student student : students) {
-			if (student.gpa > 3.5) {
-				result.add(student.name);
-			}
-		}
-		return result;
-	}
+    public List<String> honorStudents(List<Student> students) {
+        return students.stream()
+                .filter(student -> student.gpa > 3.5)
+                .map(student -> student.name)
+                .collect(Collectors.toList());
+    }
 
-	static class Student {
+    static class Student {
 
-		String name;
-		double gpa;
+        String name;
+        double gpa;
 
-		Student(String name, double gpa) {
-			this.name = name;
-			this.gpa = gpa;
-		}
-	}
+        Student(String name, double gpa) {
+            this.name = name;
+            this.gpa = gpa;
+        }
+    }
 
-	public void clientCode() {
-		List<Student> students = new ArrayList<Student>();
-		students.add(new Student("Nino", 3.9));
-		students.add(new Student("Giorgi", 3.1));
-		students.add(new Student("Maka", 3.7));
+    public void clientCode() {
+        List<Student> students = new ArrayList<Student>();
+        students.add(new Student("Nino", 3.9));
+        students.add(new Student("Giorgi", 3.1));
+        students.add(new Student("Maka", 3.7));
 
-		System.out.println(honorStudents(students));
-	}
+        System.out.println(honorStudents(students));
+    }
 }
