@@ -4,80 +4,140 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * Smell: Large Class
+ * Smell:
+ * This class contains many unrelated responsibilities, including academics,
+ * staffing, finance, support, transport, cafeteria, payroll, and website
+ * management. This makes the class too large and difficult to maintain.
  *
- * This class mixes enrollment, staffing, finance, cafeteria, transport, help
- * desk, payroll, and website concerns. Too many responsibilities are being kept
- * in one abstraction.
+ * Refactorings:
+ * - Extracted academic responsibilities into AcademicDepartment
+ * - Extracted financial responsibilities into FinanceDepartment
+ * - Extracted operational responsibilities into OperationsDepartment
  *
- * Proposed Refactorings:
- * - Extract cohesive subsets into separate classes.
- * - Split responsibilities by domain area and move related fields with behavior.
+ * Why better:
+ * Responsibilities are now grouped by domain area, which improves cohesion and
+ * makes changes more localized and easier to understand.
+ *
+ * Behavior:
+ * The observable behavior remains unchanged.
  */
 public class LargeClassExample {
 
-	private String schoolName;
-	private String address;
-	private final List<String> students = new ArrayList<>();
-	private final List<String> teachers = new ArrayList<>();
-	private final List<String> courses = new ArrayList<>();
-	private double budget;
-	private int openTickets;
-	private String cafeteriaMenu;
-	private String busSchedule;
-	private String websiteTheme;
-	private String payrollDay;
+    private String schoolName;
+    private String address;
 
-	public void enrollStudent(String student) {
-		students.add(student);
-	}
+    private final AcademicDepartment academicDepartment = new AcademicDepartment();
+    private final FinanceDepartment financeDepartment = new FinanceDepartment();
+    private final OperationsDepartment operationsDepartment = new OperationsDepartment();
 
-	public void hireTeacher(String teacher) {
-		teachers.add(teacher);
-	}
+    public void enrollStudent(String student) {
+        academicDepartment.enrollStudent(student);
+    }
 
-	public void addCourse(String course) {
-		courses.add(course);
-	}
+    public void hireTeacher(String teacher) {
+        academicDepartment.hireTeacher(teacher);
+    }
 
-	public void chargeTuition(double amount) {
-		budget += amount;
-	}
+    public void addCourse(String course) {
+        academicDepartment.addCourse(course);
+    }
 
-	public void paySalary(double amount) {
-		budget -= amount;
-	}
+    public void chargeTuition(double amount) {
+        financeDepartment.chargeTuition(amount);
+    }
 
-	public void openHelpDeskTicket() {
-		openTickets++;
-	}
+    public void paySalary(double amount) {
+        financeDepartment.paySalary(amount);
+    }
 
-	public void updateWebsiteTheme(String theme) {
-		websiteTheme = theme;
-	}
+    public void openHelpDeskTicket() {
+        operationsDepartment.openHelpDeskTicket();
+    }
 
-	public void publishBusSchedule(String schedule) {
-		busSchedule = schedule;
-	}
+    public void updateWebsiteTheme(String theme) {
+        operationsDepartment.updateWebsiteTheme(theme);
+    }
 
-	public void publishCafeteriaMenu(String menu) {
-		cafeteriaMenu = menu;
-	}
+    public void publishBusSchedule(String schedule) {
+        operationsDepartment.publishBusSchedule(schedule);
+    }
 
-	public void setPayrollDay(String day) {
-		payrollDay = day;
-	}
+    public void publishCafeteriaMenu(String menu) {
+        operationsDepartment.publishCafeteriaMenu(menu);
+    }
 
-	public void clientCode() {
-		enrollStudent("Nino");
-		hireTeacher("Ms. Kapanadze");
-		addCourse("Refactoring");
-		chargeTuition(2400);
-		paySalary(1200);
-		openHelpDeskTicket();
-		updateWebsiteTheme("blue");
-		publishBusSchedule("Route A at 08:00");
-		publishCafeteriaMenu("Soup and salad");
-		setPayrollDay("Friday");
-	}
+    public void setPayrollDay(String day) {
+        financeDepartment.setPayrollDay(day);
+    }
+
+    static class AcademicDepartment {
+        private final List<String> students = new ArrayList<>();
+        private final List<String> teachers = new ArrayList<>();
+        private final List<String> courses = new ArrayList<>();
+
+        public void enrollStudent(String student) {
+            students.add(student);
+        }
+
+        public void hireTeacher(String teacher) {
+            teachers.add(teacher);
+        }
+
+        public void addCourse(String course) {
+            courses.add(course);
+        }
+    }
+
+    static class FinanceDepartment {
+        private double budget;
+        private String payrollDay;
+
+        public void chargeTuition(double amount) {
+            budget += amount;
+        }
+
+        public void paySalary(double amount) {
+            budget -= amount;
+        }
+
+        public void setPayrollDay(String day) {
+            payrollDay = day;
+        }
+    }
+
+    static class OperationsDepartment {
+        private int openTickets;
+        private String cafeteriaMenu;
+        private String busSchedule;
+        private String websiteTheme;
+
+        public void openHelpDeskTicket() {
+            openTickets++;
+        }
+
+        public void updateWebsiteTheme(String theme) {
+            websiteTheme = theme;
+        }
+
+        public void publishBusSchedule(String schedule) {
+            busSchedule = schedule;
+        }
+
+        public void publishCafeteriaMenu(String menu) {
+            cafeteriaMenu = menu;
+        }
+    }
+
+    public void clientCode() {
+        enrollStudent("Nino");
+        hireTeacher("Ms. Kapanadze");
+        addCourse("Refactoring");
+        chargeTuition(2400);
+        paySalary(1200);
+        openHelpDeskTicket();
+        updateWebsiteTheme("blue");
+        publishBusSchedule("Route A at 08:00");
+        publishCafeteriaMenu("Soup and salad");
+        setPayrollDay("Friday");
+    }
 }

@@ -1,47 +1,57 @@
 package badsmells;
 
 /*
- * Smell: Message Chains
+ * Smell:
+ * The client navigates through a chain of objects to get one value, which
+ * creates unnecessary coupling to the internal object graph.
  *
- * The caller navigates through several objects to get one value. That couples
- * the caller to the full object graph instead of to a simpler abstraction.
+ * Refactorings:
+ * - Hid the delegate chain behind a simpler method in University
+ * - Reduced knowledge of internal structure in client code
  *
- * Proposed Refactorings:
- * - Hide delegates behind a simpler method.
- * - Move the behavior closer to the object that owns the needed data.
+ * Why better:
+ * The client now depends only on University, not on the full path through
+ * Department, Coordinator, and Office. This makes the code easier to maintain.
+ *
+ * Behavior:
+ * The observable behavior remains unchanged.
  */
 public class MessageChainsExample {
 
-	static class University {
+    static class University {
 
-		Department getDepartment() {
-			return new Department();
-		}
-	}
+        Department getDepartment() {
+            return new Department();
+        }
 
-	static class Department {
+        String getCoordinatorPhoneNumber() {
+            return getDepartment().getCoordinator().getOffice().getPhoneNumber();
+        }
+    }
 
-		Coordinator getCoordinator() {
-			return new Coordinator();
-		}
-	}
+    static class Department {
 
-	static class Coordinator {
+        Coordinator getCoordinator() {
+            return new Coordinator();
+        }
+    }
 
-		Office getOffice() {
-			return new Office();
-		}
-	}
+    static class Coordinator {
 
-	static class Office {
+        Office getOffice() {
+            return new Office();
+        }
+    }
 
-		String getPhoneNumber() {
-			return "555-0101";
-		}
-	}
+    static class Office {
 
-	public void clientCode() {
-		University university = new University();
-		System.out.println(university.getDepartment().getCoordinator().getOffice().getPhoneNumber());
-	}
+        String getPhoneNumber() {
+            return "555-0101";
+        }
+    }
+
+    public void clientCode() {
+        University university = new University();
+        System.out.println(university.getCoordinatorPhoneNumber());
+    }
 }

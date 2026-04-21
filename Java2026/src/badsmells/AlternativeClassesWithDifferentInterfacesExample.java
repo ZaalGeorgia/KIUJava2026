@@ -1,37 +1,48 @@
 package badsmells;
 
 /*
- * Smell: Alternative Classes with Different Interfaces
+ * Smell:
+ * ZoomClassroom and TeamsClassroom provide similar behavior but expose different
+ * method names, preventing them from being used through a common interface.
  *
- * ZoomClassroom and TeamsClassroom serve a similar purpose, but their APIs do
- * not match. Because clients cannot use them through one shared protocol, code
- * must branch or adapt between them.
+ * Refactorings:
+ * - Introduced a shared Classroom interface
+ * - Unified method names across implementations
  *
- * Proposed Refactorings:
- * - Align the interfaces with common method names and semantics.
- * - Introduce a shared abstraction or adapter.
+ * Why better:
+ * Both classes can now be used interchangeably through a common abstraction,
+ * simplifying client code and improving consistency.
+ *
+ * Behavior:
+ * The observable behavior remains unchanged.
  */
 public class AlternativeClassesWithDifferentInterfacesExample {
 
-	static class ZoomClassroom {
+    interface Classroom {
+        void startSession();
+    }
 
-		public void beginSession() {
-			System.out.println("Zoom session started");
-		}
-	}
+    static class ZoomClassroom implements Classroom {
 
-	static class TeamsClassroom {
+        @Override
+        public void startSession() {
+            System.out.println("Zoom session started");
+        }
+    }
 
-		public void openMeeting() {
-			System.out.println("Teams meeting started");
-		}
-	}
+    static class TeamsClassroom implements Classroom {
 
-	public void clientCode() {
-		ZoomClassroom zoom = new ZoomClassroom();
-		TeamsClassroom teams = new TeamsClassroom();
+        @Override
+        public void startSession() {
+            System.out.println("Teams meeting started");
+        }
+    }
 
-		zoom.beginSession();
-		teams.openMeeting();
-	}
+    public void clientCode() {
+        Classroom zoom = new ZoomClassroom();
+        Classroom teams = new TeamsClassroom();
+
+        zoom.startSession();
+        teams.startSession();
+    }
 }

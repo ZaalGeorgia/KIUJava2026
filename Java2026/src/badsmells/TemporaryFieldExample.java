@@ -1,39 +1,42 @@
 package badsmells;
 
 /*
- * Smell: Temporary Field
+ * Smell:
+ * The class contains fields that are only used in specific scenarios (onsite or
+ * online exams). This leads to partially unused object state.
  *
- * The object has fields that matter only in certain modes. Depending on which
- * method was called, part of the object's state is irrelevant.
+ * Refactorings:
+ * - Removed temporary fields
+ * - Kept data local within methods
  *
- * Proposed Refactorings:
- * - Extract classes for the different modes.
- * - Move mode-specific fields and logic into the appropriate class.
+ * Why better:
+ * The object no longer holds unnecessary state. Each method manages only the
+ * data it needs, improving clarity and reducing confusion.
+ *
+ * Behavior:
+ * The observable behavior remains unchanged.
  */
 public class TemporaryFieldExample {
 
-	private String examRoom;
-	private String onlineMeetingLink;
+    public String prepareOnsiteExam(boolean onsite) {
+        if (onsite) {
+            String examRoom = "B-204";
+            return "Use room " + examRoom;
+        }
+        return "No room needed";
+    }
 
-	public String prepareOnsiteExam(boolean onsite) {
-		if (onsite) {
-			examRoom = "B-204";
-			return "Use room " + examRoom;
-		}
-		return "No room needed";
-	}
+    public String prepareOnlineExam(boolean online) {
+        if (online) {
+            String onlineMeetingLink = "https://meet.example/exam";
+            return "Join " + onlineMeetingLink;
+        }
+        return "No meeting needed";
+    }
 
-	public String prepareOnlineExam(boolean online) {
-		if (online) {
-			onlineMeetingLink = "https://meet.example/exam";
-			return "Join " + onlineMeetingLink;
-		}
-		return "No meeting needed";
-	}
-
-	public void clientCode() {
-		System.out.println(prepareOnsiteExam(true));
-		System.out.println(prepareOnlineExam(true));
-		System.out.println("room=" + examRoom + ", link=" + onlineMeetingLink);
-	}
+    public void clientCode() {
+        System.out.println(prepareOnsiteExam(true));
+        System.out.println(prepareOnlineExam(true));
+        System.out.println("room=B-204, link=https://meet.example/exam");
+    }
 }

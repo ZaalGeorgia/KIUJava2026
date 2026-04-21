@@ -1,46 +1,73 @@
 package badsmells;
 
 /*
- * Smell: Repeated Switches
+ * Smell:
+ * The same classification logic is repeated in multiple switch statements.
+ * Adding a new student type requires modifying each switch, which increases
+ * duplication and risk of inconsistency.
  *
- * The same classification logic appears in multiple switch statements. Adding a
- * new student type requires coordinated edits in each one.
+ * Refactorings:
+ * - Replaced string-based switches with an enum
+ * - Moved behavior (discount and dorm priority) into the enum
  *
- * Proposed Refactorings:
- * - Replace the switches with polymorphism.
- * - Or centralize the classification in one enum or helper so new cases are
- *   added in one place instead of in many repeated switches.
+ * Why better:
+ * All type-specific behavior is now centralized in one place. Adding a new
+ * student type requires changing only the enum, not multiple methods.
+ *
+ * Behavior:
+ * The observable behavior remains unchanged.
  */
 public class RepeatedSwitchesExample {
 
-	public double tuitionDiscount(String studentType) {
-		switch (studentType) {
-		case "STUDENT":
-			return 0.05;
-		case "ATHLETE":
-			return 0.15;
-		case "EMPLOYEE_CHILD":
-			return 0.25;
-		default:
-			return 0;
-		}
-	}
+    enum StudentType {
+        STUDENT {
+            @Override
+            public double getDiscount() {
+                return 0.05;
+            }
 
-	public String dormPriority(String studentType) {
-		switch (studentType) {
-		case "STUDENT":
-			return "NORMAL";
-		case "ATHLETE":
-			return "HIGH";
-		case "EMPLOYEE_CHILD":
-			return "LOW";
-		default:
-			return "UNKNOWN";
-		}
-	}
+            @Override
+            public String getDormPriority() {
+                return "NORMAL";
+            }
+        },
+        ATHLETE {
+            @Override
+            public double getDiscount() {
+                return 0.15;
+            }
 
-	public void clientCode() {
-		System.out.println(tuitionDiscount("ATHLETE"));
-		System.out.println(dormPriority("ATHLETE"));
-	}
+            @Override
+            public String getDormPriority() {
+                return "HIGH";
+            }
+        },
+        EMPLOYEE_CHILD {
+            @Override
+            public double getDiscount() {
+                return 0.25;
+            }
+
+            @Override
+            public String getDormPriority() {
+                return "LOW";
+            }
+        };
+
+        public abstract double getDiscount();
+        public abstract String getDormPriority();
+    }
+
+    public double tuitionDiscount(StudentType studentType) {
+        return studentType.getDiscount();
+    }
+
+    public String dormPriority(StudentType studentType) {
+        return studentType.getDormPriority();
+    }
+
+    public void clientCode() {
+        System.out.println(tuitionDiscount(StudentType.ATHLETE));
+        System.out.println(dormPriority(StudentType.ATHLETE));
+    }
 }

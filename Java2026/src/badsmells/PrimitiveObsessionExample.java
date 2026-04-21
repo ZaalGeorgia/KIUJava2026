@@ -1,23 +1,65 @@
 package badsmells;
 
 /*
- * Smell: Primitive Obsession
+ * Smell:
+ * Age, status, unpaid balance, and country are represented as raw primitives
+ * and strings instead of domain concepts. This hides meaning, spreads business
+ * rules into one boolean expression, and relies on magic values.
  *
- * Status, country, debt, and age are handled as raw primitives instead of
- * domain concepts with their own rules and meaning.
+ * Refactorings:
+ * - Replaced status and country code strings with enums
+ * - Introduced a StudentProfile domain object
+ * - Moved the dorm room eligibility rule into that object
  *
- * Proposed Refactorings:
- * - Replace primitives with domain objects or enums.
- * - Move validation and business rules into those domain types.
+ * Why better:
+ * The code now expresses domain meaning more clearly, avoids magic strings,
+ * and keeps the business rule close to the data it uses.
+ *
+ * Behavior:
+ * The observable behavior remains unchanged.
  */
 public class PrimitiveObsessionExample {
 
-	public boolean canRentDormRoom(int age, String status, double unpaidBalance, String countryCode) {
-		return age >= 18 && "ACTIVE".equals(status) && unpaidBalance < 100 && "GE".equals(countryCode);
-	}
+    enum StudentStatus {
+        ACTIVE,
+        BLOCKED
+    }
 
-	public void clientCode() {
-		System.out.println(canRentDormRoom(19, "ACTIVE", 0.0, "GE"));
-		System.out.println(canRentDormRoom(17, "BLOCKED", 120.0, "US"));
-	}
+    enum Country {
+        GE,
+        US
+    }
+
+    static class StudentProfile {
+        private final int age;
+        private final StudentStatus status;
+        private final double unpaidBalance;
+        private final Country country;
+
+        StudentProfile(int age, StudentStatus status, double unpaidBalance, Country country) {
+            this.age = age;
+            this.status = status;
+            this.unpaidBalance = unpaidBalance;
+            this.country = country;
+        }
+
+        public boolean canRentDormRoom() {
+            return age >= 18
+                    && status == StudentStatus.ACTIVE
+                    && unpaidBalance < 100
+                    && country == Country.GE;
+        }
+    }
+
+    public boolean canRentDormRoom(StudentProfile studentProfile) {
+        return studentProfile.canRentDormRoom();
+    }
+
+    public void clientCode() {
+        StudentProfile eligibleStudent = new StudentProfile(19, StudentStatus.ACTIVE, 0.0, Country.GE);
+        StudentProfile ineligibleStudent = new StudentProfile(17, StudentStatus.BLOCKED, 120.0, Country.US);
+
+        System.out.println(canRentDormRoom(eligibleStudent));
+        System.out.println(canRentDormRoom(ineligibleStudent));
+    }
 }

@@ -1,25 +1,42 @@
 package badsmells;
 
 /*
- * Smell: Mysterious Name
+ * Smell:
+ * Method and variable names do not express intent. Names like f, a, b, c, x, and y
+ * make the code difficult to understand without reverse-engineering.
  *
- * The names f, a, b, c, x, and y tell the reader almost nothing. Understanding
- * the code requires reverse-engineering instead of reading intention.
+ * Refactorings:
+ * - Renamed method and variables to reveal intent
+ * - Introduced descriptive intermediate variables
  *
- * Proposed Refactorings:
- * - Rename method and variables to reveal intent.
- * - Extract named helper methods if the calculation has distinct steps.
+ * Why better:
+ * The code is now self-explanatory and easier to read without additional comments.
+ *
+ * Behavior:
+ * The observable behavior remains unchanged.
  */
 public class MysteriousNameExample {
 
-	public int f(int a, int b, int c) {
-		int x = a * b;
-		int y = x - c;
-		return y / 2;
-	}
+    public int calculateAdjustedValue(int multiplier, int baseValue, int deduction) {
+        int product = multiply(multiplier, baseValue);
+        int adjusted = subtract(product, deduction);
+        return divideByTwo(adjusted);
+    }
 
-	public void clientCode() {
-		int result = f(8, 4, 6);
-		System.out.println(result);
-	}
+    private int multiply(int a, int b) {
+        return a * b;
+    }
+
+    private int subtract(int value, int deduction) {
+        return value - deduction;
+    }
+
+    private int divideByTwo(int value) {
+        return value / 2;
+    }
+
+    public void clientCode() {
+        int result = calculateAdjustedValue(8, 4, 6);
+        System.out.println(result);
+    }
 }
